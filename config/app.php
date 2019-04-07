@@ -227,7 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 		'Form' => Collective\Html\FormBuilder::class,
-		'html' => Collective\Html\HtmlBuilder:class
+		'html' => Collective\Html\HtmlBuilder::class
 
     ],
 
