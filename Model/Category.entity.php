@@ -1,10 +1,12 @@
 <?php
 
-namespace Model;
+namespace App\Model;
 
-class Category {
+class _Category {
     public $id;
     public $FullName;
     public $Email;
     public $Password;
+
+    public $Newses = [];
 }

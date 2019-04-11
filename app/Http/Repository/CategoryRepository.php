@@ -3,14 +3,16 @@
 namespace App\Http\Repository;
 use App\category;
 use Mockery\CountValidator\Exception;
+use App\Model\_Category;
 
 interface ICategoryRepository extends IRepositoryBase {
 
 }
 
 class CategoryRepository implements ICategoryRepository {
+
     public function all($take = null, $skip = null) {
-        $categories = category::all();
+        $categories = category::where('id','<>', 0)->orderBy('Name');
 
         if($skip != null && $skip > 0) {
             $categories = $categories->skip($skip);
@@ -20,43 +22,38 @@ class CategoryRepository implements ICategoryRepository {
             $categories = $categories->take($take);
         }
 
-        $categories = $categories->toArray();
+        $categories = $categories->get();
         $cates = array();
         $i = -1;
         foreach($categories as $category) {
             $i++;
-            $cates[$i] = new Model\Category();
-            $cates[$i]->id = $category->id;
-            $cates[$i]->FullName = $category->FullName;
-            $cates[$i]->Email = $category->Email;
-            $cates[$i]->Password = $category->Password;
+            $cates[$i] = new category();
+            $cates[$i]->id = $category['id'];
+            $cates[$i]->Name = $category['Name'];
         }
-        return cates;
+        return $cates;
     }
     
     public function singleId($id) {
         $category = category::find($id);
-        $cate = new Model\Category();
-        $cate->id = $category->id;
-        $cate->FullName = $category->FullName;
-        $cate->Email = $category->Email;
-        $cate->Password = $category->Password;
-        return $cate;
+        if($category != null) {
+            $cate = new category();
+            $cate->id = $category['id'];
+            $cate->Name = $category['Name'];
+            return $cate;
+        }
+        return null;
     }
 
     public function create($obj) {
         $obj->id = category::insertGetId([
-            'FullName' => $obj->FullName,
-            'Email' => $obj->Email,
-            'Password' => $obj->Password
+            'Name' => $obj->Name
         ]);
     }
 
     public function update($obj) {
         $category = category::find($obj->id);
-        $category->FullName = $obj->FullName;
-        $category->Email = $obj->Email;
-        $category->Password = $obj->Password;
+        $category['Name'] = $obj->Name;
         $category->save();
     }
     

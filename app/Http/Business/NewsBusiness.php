@@ -3,18 +3,19 @@
 namespace App\Http\Business;
 
 use App\Http\Business\IBusinessBase;
-use App\Http\Repository\INewsRepository;
+use App\Http\Repository\NewsRepository;
 
 interface INewsBusiness extends IBusinessBase {
     function approve($obj);
     function getNewsesByCate($cateId,$take = null, $skip = null);
+    function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null);
 }
 
 class NewsBusiness implements INewsBusiness {
 
     private $iNewsRepository = null;
 
-    public function __construct(INewsRepository $iNewsRepository) {
+    public function __construct(NewsRepository $iNewsRepository) {
         $this->iNewsRepository = $iNewsRepository;
     }
 
@@ -42,6 +43,10 @@ class NewsBusiness implements INewsBusiness {
     }
 
     public function getNewsesByCate($cateId,$take = null, $skip = null) {
-        $this->iNewsRepository->getNewsesByCate($cateId, $take, $skip);
+        return $this->iNewsRepository->getNewsesByCate($cateId, $take, $skip);
+    }
+
+    public function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null) {
+        return $this->iNewsRepository->getNewsesByCateId($cateId,$newsid,$take,$skip);
     }
 }

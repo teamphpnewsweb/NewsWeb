@@ -1,8 +1,8 @@
 <?php
 
-namespace Model;
+namespace App\Model;
 
-class News {
+class _News {
     public $id;
     public $Title;
     public $Content;

@@ -1,9 +1,11 @@
 <?php
-namespace Model;
+namespace App\Model;
 
-class Admin {
-    private $id;
-    private $FullName;
-    private $Email;
-    private $Password;
+class _Admin {
+    public $id;
+    public $FullName;
+    public $Email;
+    public $Password;
+    public $RoleId;
+    public $Role;
 }

@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'news@index')->name('home');
+
+Route::get('category/{id}', 'news@show')->name('category');
+
+Route::get('news/{id}', 'news@newsDetail')->name('newsdetail');

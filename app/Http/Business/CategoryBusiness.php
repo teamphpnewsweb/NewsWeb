@@ -2,7 +2,7 @@
 
 namespace App\Http\Business;
 
-use App\Http\Repository\ICategoryRepository;
+use App\Http\Repository\CategoryRepository;
 
 interface ICategoryBusiness extends IBusinessBase {
 
@@ -12,12 +12,12 @@ class CategoryBusiness implements ICategoryBusiness {
 
     private $iCategoryRepository = null;
 
-    public function __construct(ICategoryRepository $iCategoryRepository) {
+    public function __construct(CategoryRepository $iCategoryRepository) {
         $this->iCategoryRepository = $iCategoryRepository;
     }
 
-    public function all() {
-        return $this->iCategoryRepository->all();
+    public function all($take = null, $skip = null) {
+        return $this->iCategoryRepository->all($take,$skip);
     }
 
     public function singleId($id) {
