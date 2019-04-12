@@ -24,7 +24,7 @@ class CreateNewsesTable extends Migration
             $table->string('Decription',200);
             $table->string('Image',150);
             $table->dateTime('CreateAt');
-            $table->dateTime('DeletedAt');
+            $table->dateTime('DeletedAt')->nullable(true);
             $table->boolean('Approved')->nullable(true);
 
             $table->foreign('CateId', 'FK_news_category')->references('id')->on('categories');

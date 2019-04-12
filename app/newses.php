@@ -8,4 +8,5 @@ class newses extends Model
 {
     //
     protected $table = 'newses';
+    public $timestamps = false;
 }

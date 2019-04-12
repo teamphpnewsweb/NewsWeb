@@ -16,7 +16,7 @@ class UpdateAdmin extends Migration
         Schema::table('_admins', function (Blueprint $table) {
             //
             $table->unsignedBigInteger('roleId');
-            $table->foreign('roleId')->references('id')->on('roles');
+            $table->foreign('roleId','FK_admin_role')->references('id')->on('roles');
         });
     }
 
@@ -27,9 +27,9 @@ class UpdateAdmin extends Migration
      */
     public function down()
     {
-        
         Schema::table('_admins', function (Blueprint $table) {
             //
+            $table->dropForeign('FK_admin_role');
         });
     }
 }

@@ -4,19 +4,23 @@ namespace App\Http\Business;
 
 use App\Http\Business\IBusinessBase;
 use App\Http\Repository\NewsRepository;
+use App\Http\Repository\AdminRepository;
 
 interface INewsBusiness extends IBusinessBase {
-    function approve($obj);
+    function approve($id, $result, $adminId);
     function getNewsesByCate($cateId,$take = null, $skip = null);
     function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null);
+    function getNewsesNotApprove($adminId);
 }
 
 class NewsBusiness implements INewsBusiness {
 
     private $iNewsRepository = null;
+    private $adminRepository = null;
 
-    public function __construct(NewsRepository $iNewsRepository) {
+    public function __construct(NewsRepository $iNewsRepository, AdminRepository $adminRepository) {
         $this->iNewsRepository = $iNewsRepository;
+        $this->adminRepository = $adminRepository;
     }
 
     public function all($take = null, $skip = null) {
@@ -38,8 +42,8 @@ class NewsBusiness implements INewsBusiness {
         $this->iNewsRepository->delete($obj);
     }
 
-    public function approve($obj) {
-        $this->iNewsRepository->approve($obj);
+    public function approve($id, $result, $adminId) {
+        $this->iNewsRepository->approve($id, $result, $adminId);
     }
 
     public function getNewsesByCate($cateId,$take = null, $skip = null) {
@@ -48,5 +52,13 @@ class NewsBusiness implements INewsBusiness {
 
     public function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null) {
         return $this->iNewsRepository->getNewsesByCateId($cateId,$newsid,$take,$skip);
+    }
+
+    public function getNewsesNotApprove($adminId = null) {
+        $newses = $this->iNewsRepository->getNewsesNotApprove($adminId);
+        foreach($newses as $news) {
+            $news->AdminName = $this->adminRepository->singleId($news->CreateBy)->FullName;
+        }
+        return $newses;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Business;
-use App\Http\Repository\IAdminRepository;
+use App\Http\Repository\AdminRepository;
 
 interface IAdminBusiness extends IBusinessBase {
     function singleEmailPassword($email = '', $password = '');
@@ -11,7 +11,7 @@ class AdminBusiness implements IAdminBusiness {
 
     private $iAdminRepository = null;
 
-    public function __construct(IAdminRepository $iAdminRepository) {
+    public function __construct(AdminRepository $iAdminRepository) {
         $this->iAdminRepository = $iAdminRepository;
     }
 

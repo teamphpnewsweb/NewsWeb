@@ -3,6 +3,7 @@ namespace App\Http\Repository;
 
 use Mockery\CountValidator\Exception;
 use App\_Admin;
+use App\Model\_Admin as App_Admin;
 
 interface IAdminRepository extends IRepositoryBase {
     function singleEmailPassword($email = '', $password = '');
@@ -12,24 +13,45 @@ interface IAdminRepository extends IRepositoryBase {
 class AdminRepository implements IAdminRepository {
     
     public function all($take = null, $skip = null) {
-        throw new Exception('Chức năng này hiện không dùng được.');
+        $admins = _Admin::all()->toArray();
+        $adms = [];
+        foreach($admins as $admin) {
+            $adm = new _Admin();
+            $adm->id = $admin['id'];
+            $adm->FullName = $admin['FullName'];
+            $adm->Email = $admin['Email'];
+            $adm->Password = $admin['Password'];
+            $adm->RoleId = $admin['roleId'];
+            $adms[] = $adm;
+        }
+
+        return $adms;
     }
 
     public function singleId($id) {
-        throw new Exception('Chức năng này hiện không dùng được.');
+        $admin = _Admin::find($id);
+        $adm = new _Admin();
+        $adm->id = $admin['id'];
+        $adm->FullName = $admin['FullName'];
+        $adm->Password = $admin['Password'];
+        $adm->RoleId = $admin['roleId'];
+        return $adm;
     }
     function create($obj) {
         $obj->id = _Admin::insertGetId([
             'FullName' => $obj->FullName,
             'Email' => $obj->Email,
-            'Password' => $obj->Password
+            'roleId' => $obj->RoleId
         ]);
     }
     public function update($obj) {
-        $admin = _Admin::find($obj->id);
-
-        $admin['FullName'] = $obj->FullName;
-        $admin['Email'] = $obj->Email;
+        $admin = _Admin::where('id',$obj->id)->update(
+            [
+                'FullName' => $obj->FullName,
+                'Email' => $obj->Email,
+                'roleId' => $obj->RoleId,
+            ]);
+            
         $admin->save();
     }
 
@@ -50,6 +72,7 @@ class AdminRepository implements IAdminRepository {
                 $adm->FullName = $admin['FullName'];
                 $adm->Email = $admin['Email'];
                 $adm->Password = $admin['Password'];
+                $adm->RoleId = $admin['roleId'];
                 return $adm;
             }
         }

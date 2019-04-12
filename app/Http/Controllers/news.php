@@ -42,8 +42,8 @@ class news extends Controller
         $category = $this->iCategoryBusiness->singleId($id);
         $category->Newses = $this->iNewsBusiness->getNewsesByCate($id);
 
-        // return view('category',['category' => $category]);
-        return json_encode($category);
+        return view('category',['category' => $category]);
+        // return json_encode($category);
     }
 
     public function newsDetail($id) {

@@ -57,8 +57,9 @@
 
 .ADT-a-tag:hover {
 	color: teal;
-	font-size: 20px;
+	//font-size: 20px;
 	font-style: italic;
+	text-decoration: none;
 }
 
 .ADT-row-color {
@@ -78,5 +79,4 @@
     height: 270px;
     display: inline-block;
     overflow: hidden;
-
 }

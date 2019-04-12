@@ -8,4 +8,5 @@ class roleDetail extends Model
 {
     //
     protected $table = 'role_details';
+    public $timestamps = false;
 }

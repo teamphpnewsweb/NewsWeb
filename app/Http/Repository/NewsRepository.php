@@ -8,9 +8,10 @@ use Model\_News;
 
 interface INewsRepository extends IRepositoryBase
 {
-    function approve($obj);
+    function approve($id, $result, $adminId);
     function getNewsesByCate($cateId,$take = null, $skip = null);
     function getNewsesByCateId($cateId, $newsId,$take = null, $skip = null);
+    function getNewsesNotApprove($adminId);
  }
 
 class NewsRepository implements INewsRepository
@@ -78,7 +79,8 @@ class NewsRepository implements INewsRepository
             'Content' => $obj->Content,
             'Decription' => $obj->Decription,
             'Image' => $obj->Image,
-            'CreateAt' => $obj->CreateAt
+            'CreateAt' => $obj->CreateAt,
+            'DeletedAt' => null
         ]);
     }
 
@@ -99,10 +101,10 @@ class NewsRepository implements INewsRepository
         $news->save();
     }
 
-    public function approve($obj) {
-        $news = newses::find($obj->id);
-        $news['AppovedBy'] = $obj->AppovedBy;
-        $news['Approved'] = $obj->Approved;
+    public function approve($id, $result, $adminId) {
+        $news = newses::find($id);
+        $news['AppovedBy'] = $adminId;
+        $news['Approved'] = $result;
         $news->save();
     }
 
@@ -171,5 +173,30 @@ class NewsRepository implements INewsRepository
             $newsess[] = $newseSS;
         }
         return $newsess;
+    }
+
+    public function getNewsesNotApprove($adminId = null) {
+        $newses = newses::where([
+            ['AppovedBy',null],
+            ['DeletedBy', null]
+            ]);
+
+        if($adminId != null) {
+            $newses = $newses->where('CreateBy',$adminId);
+        }
+
+        $newses = $newses->orderBy('id','desc')->get();
+        $newss = [];
+        foreach($newses as $news) {
+            $n = new newses();
+            $n->id = $news['id'];
+            $n->Title = $news['Title'];
+            $n->Decription = $news['Decription'];
+            $n->CreateAt = $news['CreateAt'];
+            $n->CreateBy = $news['CreateBy'];
+            $n->CreateAt = $news['CreateAt'];
+            $newss[] = $n;
+        }
+        return $newss;
     }
 }
