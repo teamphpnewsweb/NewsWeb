@@ -177,7 +177,7 @@ class admin extends Controller
         if(!$this->isContainRole($roles,self::$ApproveNews))
             return redirect(route('403'));
         
-        $news = $this->newsBusiness->approve($request->input('id'), $request->input('result'), session('admin')->id);
+        $news = $this->newsBusiness->approve($request->input('id'), $request->input('result') == 'true' ? true : false, session('admin')->id);
 
         return redirect(route('admin'));
         // return json_encode($news);

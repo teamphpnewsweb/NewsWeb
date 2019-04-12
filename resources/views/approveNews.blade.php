@@ -28,14 +28,14 @@ $title = 'Duyệt - '.$news->Title;
             <form method="post" action="{{route('approveNewsPost')}}">
                 {{csrf_field()}}
                 <input type="hidden" name="id" value="{{$news->id}}">
-                <input id="result" name="result" type="hidden" checked style="display: none">
+                <input id="result" name="result" type="hidden" value="false" style="display: none">
                 <input class="btn btn-success" type="submit" value="Duyệt" onclick="check('true')">
                 <input class="btn btn-danger" type="submit" value="Không hợp lệ" onclick="check('false')">
             </form>
         </div>
     </div>
     <script>
-        check(result) {
+        function check(result) {
             document.getElementById('result').value = result;
         }
     </script>

@@ -112,7 +112,7 @@ class NewsRepository implements INewsRepository
         $newss = newses::where([
             ['DeletedBy',null],
             ['CateId',$cateId],
-            ['AppovedBy','<>', null]
+            ['Approved', true]
         ])->orderBy('id','desc');
         if($skip != null && $skip > 0) {
             $newss = $newss->skip($skip);
