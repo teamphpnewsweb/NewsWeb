@@ -24,6 +24,7 @@ class AdminBusiness implements IAdminBusiness {
     }
 
     function create($obj) {
+        $obj->Password = sha1($obj->Password,false);
         $this->iAdminRepository->create($obj);
     }
 
@@ -36,10 +37,12 @@ class AdminBusiness implements IAdminBusiness {
     }
 
     function singleEmailPassword($email = '', $password = '') {
+        $password = sha1($password, false);
         return $this->iAdminRepository->singleEmailPassword($email, $password);
     }
 
     function passowrdChange($id, $password) {
+        $password = sha1($password, false);
         $this->iAdminRepository->passowrdChange($id, $password);
     }
 

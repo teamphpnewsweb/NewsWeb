@@ -7,7 +7,7 @@ use App\Http\Repository\NewsRepository;
 use App\Http\Repository\AdminRepository;
 
 interface INewsBusiness extends IBusinessBase {
-    function approve($id, $result, $adminId);
+    function approve($id, $result, $comment, $adminId);
     function getNewsesByCate($cateId,$take = null, $skip = null);
     function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null);
     function getNewsesNotApprove($adminId);
@@ -42,8 +42,8 @@ class NewsBusiness implements INewsBusiness {
         $this->iNewsRepository->delete($obj);
     }
 
-    public function approve($id, $result, $adminId) {
-        $this->iNewsRepository->approve($id, $result, $adminId);
+    public function approve($id, $result, $comment, $adminId) {
+        $this->iNewsRepository->approve($id, $result, $comment, $adminId);
     }
 
     public function getNewsesByCate($cateId,$take = null, $skip = null) {

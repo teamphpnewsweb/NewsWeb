@@ -1,9 +1,9 @@
 <?php
-$title = 'Duyệt - '.$news->Title;
+$title = 'Duyệt - ' . $news->Title;
 ?>
 @extends('layout.layout')
 @section('content')
-<div class="col-md-12 col-sm-12 row">
+<div class="col-md-12 col-sm-12 row img-content">
     <div class="col-md-12 col-sm-12 row">
         <div class="col-md-12 col-sm-12 row">
             <div class="col-md-12 col-sm-10">
@@ -27,14 +27,22 @@ $title = 'Duyệt - '.$news->Title;
         <div class="col-md-12" style="text-align: center; padding: 10px;">
             <form method="post" action="{{route('approveNewsPost')}}">
                 {{csrf_field()}}
-                <input type="hidden" name="id" value="{{$news->id}}">
-                <input id="result" name="result" type="hidden" value="false" style="display: none">
-                <input class="btn btn-success" type="submit" value="Duyệt" onclick="check('true')">
-                <input class="btn btn-danger" type="submit" value="Không hợp lệ" onclick="check('false')">
+                <div class="col-md-12">
+                    <textarea name="comment">{{ $news->Comment }}</textarea>
+                </div>
+                <div class="col-md-12">
+                    <input type="hidden" name="id" value="{{$news->id}}">
+                    <input id="result" name="result" type="hidden" value="false" style="display: none">
+                    <input class="btn btn-success" type="submit" value="Duyệt" onclick="check('true')">
+                    <input class="btn btn-danger" type="submit" value="Không hợp lệ" onclick="check('false')">
+                </div>
             </form>
         </div>
     </div>
+</div>
+    <script src="{{route('home')}}/public/ckeditor/ckeditor.js"></script>
     <script>
+        CKEDITOR.replace('comment');
         function check(result) {
             document.getElementById('result').value = result;
         }

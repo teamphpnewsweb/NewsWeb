@@ -41,7 +41,8 @@ class AdminRepository implements IAdminRepository {
         $obj->id = _Admin::insertGetId([
             'FullName' => $obj->FullName,
             'Email' => $obj->Email,
-            'roleId' => $obj->RoleId
+            'roleId' => $obj->RoleId,
+            'Password' => $obj->Password
         ]);
     }
     public function update($obj) {

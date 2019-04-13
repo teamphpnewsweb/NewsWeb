@@ -80,3 +80,8 @@
     display: inline-block;
     overflow: hidden;
 }
+
+.img-content img {
+	max-width: 100% !important;
+	height: auto !important;
+}

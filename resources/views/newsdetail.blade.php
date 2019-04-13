@@ -20,7 +20,7 @@ $title = $news->Title;
         <div class="col-md-12 col-sm-12 row">
             <h4 class="text-decription-news">{{ $news->Decription }}</h4>
         </div>
-        <div class="col-md-12 col-sm-12 row text-content-news">
+        <div class="col-md-12 col-sm-12 row text-content-news img-content">
             {!! $news->Content !!}
         </div>
     </div>

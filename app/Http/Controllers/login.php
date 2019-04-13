@@ -31,7 +31,7 @@ class login extends Controller
         if($admin == null) {
             return view('login',
             [
-                'error', 'email hoặc mật khẩu không đúng',
+                'error' => 'email hoặc mật khẩu không đúng',
                 'email' => $email,
                 'password' => $password
             ]);

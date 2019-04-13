@@ -8,7 +8,7 @@ use Model\_News;
 
 interface INewsRepository extends IRepositoryBase
 {
-    function approve($id, $result, $adminId);
+    function approve($id, $result, $comment, $adminId);
     function getNewsesByCate($cateId,$take = null, $skip = null);
     function getNewsesByCateId($cateId, $newsId,$take = null, $skip = null);
     function getNewsesNotApprove($adminId);
@@ -45,6 +45,7 @@ class NewsRepository implements INewsRepository
             $newsess[$i]->ApproveBy = $news['ApprovedBy'];
             $newsess[$i]->DeletedBy = $news['DeletedBy'];
             $newsess[$i]->CreateBy = $news['CreateBy'];
+            $newsess[$i]->Comment = $news['Comment'];
         }
 
         return $newsess;
@@ -66,6 +67,7 @@ class NewsRepository implements INewsRepository
             $news1->AppovedBy = $news['AppovedBy'];
             $news1->DeletedBy = $news['DeletedBy'];
             $news1->CreateBy = $news['CreateBy'];
+            $news1->Comment = $news['Comment'];
             return $news1;
         }
         return null;        
@@ -91,6 +93,7 @@ class NewsRepository implements INewsRepository
         $news['Content'] = $obj->Content;
         $news['Decription'] = $obj->Decription;
         $news['Image'] = $obj->Image;
+        $news['Approved'] = false;
         $news->save();
     }
 
@@ -101,10 +104,11 @@ class NewsRepository implements INewsRepository
         $news->save();
     }
 
-    public function approve($id, $result, $adminId) {
+    public function approve($id, $result, $comment, $adminId) {
         $news = newses::find($id);
         $news['AppovedBy'] = $adminId;
         $news['Approved'] = $result;
+        $news['Comment'] = $comment;
         $news->save();
     }
 
@@ -114,12 +118,14 @@ class NewsRepository implements INewsRepository
             ['CateId',$cateId],
             ['Approved', true]
         ])->orderBy('id','desc');
+
         if($skip != null && $skip > 0) {
             $newss = $newss->skip($skip);
         }
         if($take != null && $take > 0) {
             $newss = $newss->take($take);
         }
+        
         $newss= $newss->get();
         $newsess = [];
         foreach ($newss as $news) {
@@ -136,6 +142,7 @@ class NewsRepository implements INewsRepository
             $newseSS->ApproveBy = $news['AppovedBy'];
             $newseSS->DeletedBy = $news['DeletedBy'];
             $newseSS->CreateBy = $news['CreateBy'];
+            $newseSS->Comment = $news['Comment'];
             $newsess[] = $newseSS;
         }
         return $newsess;
@@ -170,6 +177,7 @@ class NewsRepository implements INewsRepository
             $newseSS->ApproveBy = $news['AppovedBy'];
             $newseSS->DeletedBy = $news['DeletedBy'];
             $newseSS->CreateBy = $news['CreateBy'];
+            $newseSS->Comment = $news['Comment'];
             $newsess[] = $newseSS;
         }
         return $newsess;
@@ -195,6 +203,7 @@ class NewsRepository implements INewsRepository
             $n->CreateAt = $news['CreateAt'];
             $n->CreateBy = $news['CreateBy'];
             $n->CreateAt = $news['CreateAt'];
+            $n->Comment = $news['Comment'];
             $newss[] = $n;
         }
         return $newss;

@@ -2,7 +2,12 @@
 @section('content')
 <form method="post" class="form-horizontal" role="form" novalidate="novalidate">
 {{ csrf_field() }}
-<div class="col-md-12 col-sm-12">
+@if(isset($error))
+<div class="col-md-offset-2 col-md-3" style="color: red; text-align: center;">
+    {{$error}}
+</div>
+@endif
+<div class="col-md-12">
     <div class="form-group">
         <label class="col-md-2 control-label">Tài khoản</label>
         <div class="col-md-10 col-sm-12">
