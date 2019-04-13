@@ -40,9 +40,9 @@ $title = $news->Title;
             @foreach($newses as $n)
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail block-dis thumbnail-custom">
-                    <a href="/newsweb/news/{{ $n->id }}" class="ADT-a-tag">
+                    <a href="{{route('newsdetail',['id' => $news->id])}}" class="ADT-a-tag">
                         <div class="col-md-12 col-sm-12 row" style="text-align: center">
-                            <img class="img-news-detail" src="/newsweb/storage/app/{{ $n->Image }}">
+                            <img class="img-news-detail" src="{{route('home')}}/newsweb/storage/app/{{ $n->Image }}">
                         </div>
                         <div class="col-md-12 col-sm-12 row">
                             <label class="text-title-rel-news">{{ $n->Title }}<label>
