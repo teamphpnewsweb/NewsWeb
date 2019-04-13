@@ -119,7 +119,7 @@ class admin extends Controller
         $news->CreateAt = date('ymdhis');
 
         if($request->file('image')->isValid()) {
-            $news->Image = $request->file('image')->storeAs('images',date('ymdhis')."-".$news->Title);
+            $news->Image = $request->file('image')->storeAs('images',date('ymdhis'));
         }
 
         $this->newsBusiness->create($news);
