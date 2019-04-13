@@ -17,8 +17,8 @@ Route::get('/error',function() {
 
 //NewsController
 Route::get('/', 'news@index')->name('home');
-Route::get('category/{id}', 'news@show')->name('category');
-Route::get('news/{id}', 'news@newsDetail')->name('newsdetail');
+Route::get('/category/{id}', 'news@show')->name('category');
+Route::get('/news/{id}', 'news@newsDetail')->name('newsdetail');
 
 //AdminController
 // Route::get('admin', 'admin@index')->name('admin');
@@ -30,6 +30,8 @@ Route::get('admin/createadmin', 'admin@createAdmin')->name('createAdmin');
 Route::post('admin/createadmin', 'admin@createAdminPost')->name('createAdmin');
 Route::get('admin/approvedNews/{id}', 'admin@approveNews')->name('approveNews');
 Route::post('admin/approveNews', 'admin@approveNewsPost')->name('approveNewsPost');
+Route::get('admin/addcategory', 'admin@addCategory')->name('addcategory');
+Route::post('admin/addcategory', 'admin@addCategoryPost')->name('addcategory');
 
 //LoginController
 Route::get('admin/login', 'login@signin')->name('login');

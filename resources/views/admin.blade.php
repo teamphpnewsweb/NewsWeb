@@ -57,6 +57,9 @@
 </div>
 @endif
 @if(isset($pagrams['AppoveNews']) && $pagrams['AppoveNews'])
+<div class="col-md-12">
+    <a href="{{ route('addcategory') }}">Thêm loại tin</a>
+</div>
 <div class="col-md-12" style="text-align: center">
     <h3>Các bài viết chưa duyệt</h3>
 </div>

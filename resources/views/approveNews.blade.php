@@ -22,7 +22,7 @@ $title = 'Duyệt - '.$news->Title;
             <h4 class="text-decription-news">{{ $news->Decription }}</h4>
         </div>
         <div class="col-md-12 col-sm-12 row text-content-news">
-            {{ $news->Content }}
+            {!! $news->Content !!}
         </div>
         <div class="col-md-12" style="text-align: center; padding: 10px;">
             <form method="post" action="{{route('approveNewsPost')}}">

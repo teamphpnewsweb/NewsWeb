@@ -9,6 +9,7 @@ use App\newses;
 use App\Http\Business\NewsBusiness;
 use App\Http\Business\CategoryBusiness;
 use App\_Admin;
+use App\category;
 
 class admin extends Controller
 {
@@ -181,5 +182,33 @@ class admin extends Controller
 
         return redirect(route('admin'));
         // return json_encode($news);
+    }
+
+    public function addCategory() {
+        if(session('admin') == null)
+            return redirect(route('login'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if(!$this->isContainRole($roles,self::$ApproveNews))
+            return redirect(route('403'));
+
+        return view('addCategory');
+    }
+
+    public function addCategoryPost(Request $request) {
+        if(session('admin') == null)
+            return redirect(route('login'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if(!$this->isContainRole($roles,self::$ApproveNews))
+            return redirect(route('403'));
+
+        $category = new category();
+
+        $category->Name = $request->input('name');
+
+        $this->categoryBusiness->create($category);
+
+        return redirect(route('admin'));
     }
 }
