@@ -32,9 +32,10 @@ $title = 'Trang tin tức';
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6" style="overflow-y: auto; overflow-x: hidden;">
+        <div class="col-md-4 col-sm-6" style="height: 200px;overflow-y: auto; overflow-x: hidden;">
             <?php $count = count($category->Newses); ?>
-            @for($i = 1; $i < $count; $i++) <div class="col-md-12 col-sm-12 row thumbnail" style="margin: 5px;
+            @for($i = 1; $i < $count; $i++)
+            <div class="col-md-12 col-sm-12 row thumbnail" style="margin: 5px;
                                                                                                 padding: 5px;">
                 <a style="font-size: 16px;" href="{{route('newsdetail', ['id' => $category->Newses[$i]->id])}}">
                     <div class="col-md-12 col-sm-12 row">
@@ -48,7 +49,7 @@ $title = 'Trang tin tức';
                         </div>
                     </div>
                 </a>
-        
+        </div>
         @endfor
         </div>
     </div>

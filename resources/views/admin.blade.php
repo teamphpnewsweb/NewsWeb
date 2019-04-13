@@ -28,15 +28,15 @@
                 <td>
                     {{ $loop->index + 1 }}
                 </td>
-                <td>
+                <td style="padding: 5px">
                     {{ $news->Title }}
                 </td>
-                <td>
+                <td style="padding: 5px">
                     {{ $news->Decription}}
                 </td>
-                <td>
+                <!-- <td>
                     <a>Xem chi tiết</a> | <a>Sửa</a>
-                </td>
+                </td> -->
             </tr>
             @else
             <tr style="background-color: #D8D8D8">
