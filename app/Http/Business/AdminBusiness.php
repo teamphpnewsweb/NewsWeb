@@ -15,33 +15,33 @@ class AdminBusiness implements IAdminBusiness {
         $this->iAdminRepository = $iAdminRepository;
     }
 
-    function all($take = null, $skip = null) {
+    public function all($take = null, $skip = null) {
         return $this->iAdminRepository->all($take, $skip);
     }
 
-    function singleId($id) {
+    public function singleId($id) {
         return $this->iAdminRepository->singleId($id);
     }
 
-    function create($obj) {
+    public function create($obj) {
         $obj->Password = sha1($obj->Password,false);
         $this->iAdminRepository->create($obj);
     }
 
-    function update($obj) {
+    public function update($obj) {
         $this->iAdminRepository->update($obj);
     }
 
-    function delete($obj) {
+    public function delete($obj) {
         $this->iAdminRepository->delete($obj);
     }
 
-    function singleEmailPassword($email = '', $password = '') {
+    public function singleEmailPassword($email = '', $password = '') {
         $password = sha1($password, false);
         return $this->iAdminRepository->singleEmailPassword($email, $password);
     }
 
-    function passowrdChange($id, $password) {
+    public function passowrdChange($id, $password) {
         $password = sha1($password, false);
         $this->iAdminRepository->passowrdChange($id, $password);
     }

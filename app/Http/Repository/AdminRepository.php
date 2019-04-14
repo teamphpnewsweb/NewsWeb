@@ -3,7 +3,6 @@ namespace App\Http\Repository;
 
 use Mockery\CountValidator\Exception;
 use App\_Admin;
-use App\Model\_Admin as App_Admin;
 
 interface IAdminRepository extends IRepositoryBase {
     function singleEmailPassword($email = '', $password = '');
@@ -12,16 +11,21 @@ interface IAdminRepository extends IRepositoryBase {
 
 class AdminRepository implements IAdminRepository {
     
+    private function getAdmin($admin) {
+        $adm = new _Admin();
+        $adm->id = $admin['id'];
+        $adm->FullName = $admin['FullName'];
+        $adm->Email = $admin['Email'];
+        $adm->Password = $admin['Password'];
+        $adm->RoleId = $admin['roleId'];
+        return $adm;
+    }
+
     public function all($take = null, $skip = null) {
         $admins = _Admin::all()->toArray();
         $adms = [];
         foreach($admins as $admin) {
-            $adm = new _Admin();
-            $adm->id = $admin['id'];
-            $adm->FullName = $admin['FullName'];
-            $adm->Email = $admin['Email'];
-            $adm->Password = $admin['Password'];
-            $adm->RoleId = $admin['roleId'];
+            $adm = $this->getAdmin($admin);
             $adms[] = $adm;
         }
 
@@ -30,14 +34,10 @@ class AdminRepository implements IAdminRepository {
 
     public function singleId($id) {
         $admin = _Admin::find($id);
-        $adm = new _Admin();
-        $adm->id = $admin['id'];
-        $adm->FullName = $admin['FullName'];
-        $adm->Password = $admin['Password'];
-        $adm->RoleId = $admin['roleId'];
-        return $adm;
+        return $this->getAdmin($admin);
     }
-    function create($obj) {
+
+    public function create($obj) {
         $obj->id = _Admin::insertGetId([
             'FullName' => $obj->FullName,
             'Email' => $obj->Email,
@@ -45,6 +45,7 @@ class AdminRepository implements IAdminRepository {
             'Password' => $obj->Password
         ]);
     }
+
     public function update($obj) {
         $admin = _Admin::where('id',$obj->id)->update(
             [
@@ -68,16 +69,10 @@ class AdminRepository implements IAdminRepository {
             ])->first();
     
             if($admin != null) {
-                $adm = new _Admin();
-                $adm->id = $admin['id'];
-                $adm->FullName = $admin['FullName'];
-                $adm->Email = $admin['Email'];
-                $adm->Password = $admin['Password'];
-                $adm->RoleId = $admin['roleId'];
-                return $adm;
+                return $this->getAdmin($admin);
             }
         }
-            return null;
+        return null;
     }
     
     public function passowrdChange($id, $password) {

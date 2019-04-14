@@ -357,6 +357,7 @@ class ComposerStaticInitf5787043a69516e19bd5e0fa3741c380
         'App\\newses' => __DIR__ . '/../..' . '/app/newses.php',
         'App\\role' => __DIR__ . '/../..' . '/app/role.php',
         'App\\roleDetail' => __DIR__ . '/../..' . '/app/roleDetail.php',
+        'ApprovedAt' => __DIR__ . '/../..' . '/database/migrations/2019_04_14_081629_approvedAt.php',
         'ArithmeticError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php',
         'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',

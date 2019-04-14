@@ -16,8 +16,7 @@ $title = 'Duyệt - ' . $news->Title;
         <hr />
         <div class="col-md-12 col-sm-12 row" style="border-bottom: solid 1px #C3C3C3">
             <div class="col-md-3 col-sm-8 row text-date-news">Ngày viết: {{ $news->CreateAt }}</div>
-            <div class="col-md-3">Người viết: {{ $news->AdminName }}</div>
-            <div class="col-md-offset-3 col-md-3">Loại tin: {{$news->CategoryName}}</div>
+            <div class="col-md-offset-6 col-md-3">Loại tin: {{$news->CategoryName}}</div>
         </div>
         <div class="col-md-12 col-sm-12 row">
             <h4 class="text-decription-news" style="font-size: 20px; text-align: justify;">{{ $news->Decription }}</h4>
@@ -25,27 +24,24 @@ $title = 'Duyệt - ' . $news->Title;
         <div class="col-md-12 col-sm-12 row text-content-news" style="font-size: 20px; text-align: justify;">
             {!! $news->Content !!}
         </div>
+        <div class="col-md-12">
+            <hr>
+        </div>
         <div class="col-md-12" style="text-align: center; padding: 10px;">
-            <form method="post" action="{{route('approveNewsPost')}}">
-                {{csrf_field()}}
-                <div class="col-md-12">
-                    <textarea name="comment">{{ $news->Comment }}</textarea>
-                </div>
-                <div class="col-md-12">
-                    <input type="hidden" name="id" value="{{$news->id}}">
-                    <input id="result" name="result" type="hidden" value="false" style="display: none">
-                    <input class="btn btn-success" type="submit" value="Duyệt" onclick="check('true')">
-                    <input class="btn btn-danger" type="submit" value="Không hợp lệ" onclick="check('false')">
-                </div>
-            </form>
+            <div class="col-md-12" style="font-size: 36px; font-weight: bold">
+                Ghi chú
+            </div>
+            <div class="col-md-12" style="text-align: initial">
+                {!! $news->Comment !!}
+            </div>
+            <div class="col-md-12">
+                <hr>
+            </div>
+            <div class="col-md-12" style="padding: 10px; text-align: center;">
+                <a class="btn btn-primary" href="{{route('editNews')}}/{{$news->id}}">Sửa</a>
+                <a class="col-md-offset-1 btn btn-default" href="{{route('admin')}}">Quay lại</a>
+            </div>
         </div>
     </div>
 </div>
-    <script src="{{route('home')}}/public/ckeditor/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('comment');
-        function check(result) {
-            document.getElementById('result').value = result;
-        }
-    </script>
-    @endsection
+@endsection

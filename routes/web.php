@@ -32,6 +32,9 @@ Route::get('admin/approvedNews/{id}', 'admin@approveNews')->name('approveNews');
 Route::post('admin/approveNews', 'admin@approveNewsPost')->name('approveNewsPost');
 Route::get('admin/addcategory', 'admin@addCategory')->name('addcategory');
 Route::post('admin/addcategory', 'admin@addCategoryPost')->name('addcategory');
+Route::get('admin/editNews/{id}', 'admin@editNews')->name('editNews');
+Route::post('admin/editNews', 'admin@editNewsPost')->name('editNews');
+Route::get('admin/reviewNews/{id}', 'admin@reviewNews')->name('reviewNews');
 
 //LoginController
 Route::get('admin/login', 'login@signin')->name('login');

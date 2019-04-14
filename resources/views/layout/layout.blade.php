@@ -7,10 +7,13 @@
     <link href="{{route('home')}}/public/css/bootstrap.css" rel="stylesheet">
     <link href="{{route('home')}}/public/css/site.css" rel="stylesheet">
     <link href="{{route('home')}}/public/css/ADT_site.css" rel="stylesheet">
-    
+    <meta property="fb:app_id" content="271583777119946"/>
+    <meta property="fb:admins" content="112470139913901">
     <title>{{ isset($title) ? $title : 'Web site tin tức' }}</title>
 </head>
 <body style="margin-top: 10px;">
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=271583777119946&autoLogAppEvents=1"></script>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

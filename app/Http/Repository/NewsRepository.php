@@ -4,18 +4,37 @@ namespace App\Http\Repository;
 
 use App\Http\Repository\IRepositoryBase;
 use App\newses;
-use Model\_News;
 
 interface INewsRepository extends IRepositoryBase
 {
     function approve($id, $result, $comment, $adminId);
-    function getNewsesByCate($cateId,$take = null, $skip = null);
-    function getNewsesByCateId($cateId, $newsId,$take = null, $skip = null);
-    function getNewsesNotApprove($adminId);
+    function getNewsesByCate($cateId, $take = null, $skip = null);
+    function getNewsesByCateId($cateId, $newsId, $take = null, $skip = null);
+    function getNewsesNotApprove($adminId = null);
+    function getNewsesByCreatedAdmin($adminId, $approve = null);
+    function getNewsesByApprovedAdmin($adminId = null, $approved = null);
  }
 
 class NewsRepository implements INewsRepository
 {
+    private function getNews($news) {
+        $newS = new newses();
+        $newS->id = $news['id'];
+        $newS->Title = $news['Title'];
+        $newS->Decription = $news['Decription'];
+        $newS->Image = $news['Image'];
+        $newS->Content = $news['Content'];
+        $newS->CreateAt = $news['CreateAt'];
+        $newS->DeletedAt = $news['DeletedAt'];
+        $newS->Approved = $news['Approved'];
+        $newS->CateId = $news['CateId'];
+        $newS->ApprovedBy = $news['AppovedBy'];
+        $newS->DeletedBy = $news['DeletedBy'];
+        $newS->CreateBy = $news['CreateBy'];
+        $newS->Comment = $news['Comment'];
+        return $newS;
+    }
+
     public function all($take = null, $skip = null) {
         $newss = newses::whereNull('DeletedBy')->where('Approved', 1)->orderBy('id','desc');
         if($skip != null && $skip > 0) {
@@ -29,23 +48,8 @@ class NewsRepository implements INewsRepository
         $newss= $newss->get();
 
         $newsess = array();
-        $i = -1;
         foreach ($newss as $news) {
-            $i++;
-            $newsess[$i] = new newses();
-            $newsess[$i]->id = $news['id'];
-            $newsess[$i]->Title = $news['Title'];
-            $newsess[$i]->Decription = $news['Decription'];
-            $newsess[$i]->Image = $news['Image'];
-            $newsess[$i]->Content = $news['Content'];
-            $newsess[$i]->CreateAt = $news['CreateAt'];
-            $newsess[$i]->DeletedAt = $news['DeletedAt'];
-            $newsess[$i]->Approved = $news['Approved'];
-            $newsess[$i]->CateId = $news['CateId'];
-            $newsess[$i]->ApproveBy = $news['ApprovedBy'];
-            $newsess[$i]->DeletedBy = $news['DeletedBy'];
-            $newsess[$i]->CreateBy = $news['CreateBy'];
-            $newsess[$i]->Comment = $news['Comment'];
+            $newsess[] = $this->getNews($news);
         }
 
         return $newsess;
@@ -54,21 +58,7 @@ class NewsRepository implements INewsRepository
     public function singleId($id) {
         $news = newses::find($id);
         if($news != null) {
-            $news1 = new newses();
-            $news1->id = $news['id'];
-            $news1->Title = $news['Title'];
-            $news1->Content = $news['Content'];
-            $news1->Decription = $news['Decription'];
-            $news1->Image = $news['Image'];
-            $news1->CreateAt = $news['CreateAt'];
-            $news1->DeletedAt = $news['DeletedAt'];
-            $news1->Approved = $news['Approved'];
-            $news1->CateId = $news['CateId'];
-            $news1->AppovedBy = $news['AppovedBy'];
-            $news1->DeletedBy = $news['DeletedBy'];
-            $news1->CreateBy = $news['CreateBy'];
-            $news1->Comment = $news['Comment'];
-            return $news1;
+            return $this->getNews($news);
         }
         return null;        
     }
@@ -87,14 +77,14 @@ class NewsRepository implements INewsRepository
     }
 
     public function update($obj) {
-        $news = newses::find($obj->id);
-        $news['CateId'] = $obj->CateId;
-        $news['Title'] = $obj->Title;
-        $news['Content'] = $obj->Content;
-        $news['Decription'] = $obj->Decription;
-        $news['Image'] = $obj->Image;
-        $news['Approved'] = false;
-        $news->save();
+        newses::where('id',$obj->id)->update([
+            'CateId' => $obj->CateId,
+            'Title' => $obj->Title,
+            'Content' => $obj->Content,
+            'Decription' => $obj->Decription,
+            'Image' => $obj->Image,
+            'Approved' => null
+        ]);
     }
 
     public function delete($obj) {
@@ -105,11 +95,12 @@ class NewsRepository implements INewsRepository
     }
 
     public function approve($id, $result, $comment, $adminId) {
-        $news = newses::find($id);
-        $news['AppovedBy'] = $adminId;
-        $news['Approved'] = $result;
-        $news['Comment'] = $comment;
-        $news->save();
+        newses::where('id', $id)->update([
+            'AppovedBy' => $adminId,
+            'Approved' => $result,
+            'Comment' => $comment,
+            'ApprovedAt' => date('ymdhis')
+        ]);
     }
 
     public function getNewsesByCate($cateId, $take = null, $skip = null) {
@@ -129,21 +120,7 @@ class NewsRepository implements INewsRepository
         $newss= $newss->get();
         $newsess = [];
         foreach ($newss as $news) {
-            $newseSS = new newses();
-            $newseSS->id = $news['id'];
-            $newseSS->Title = $news['Title'];
-            $newseSS->Decription = $news['Decription'];
-            $newseSS->Image = $news['Image'];
-            $newseSS->Content = $news['Content'];
-            $newseSS->CreateAt = $news['CreateAt'];
-            $newseSS->DeletedAt = $news['DeletedAt'];
-            $newseSS->Approved = $news['Approved'];
-            $newseSS->CateId = $news['CateId'];
-            $newseSS->ApproveBy = $news['AppovedBy'];
-            $newseSS->DeletedBy = $news['DeletedBy'];
-            $newseSS->CreateBy = $news['CreateBy'];
-            $newseSS->Comment = $news['Comment'];
-            $newsess[] = $newseSS;
+            $newsess[] = $this->getNews($news);
         }
         return $newsess;
     }
@@ -164,28 +141,14 @@ class NewsRepository implements INewsRepository
         $newss= $newss->get();
         $newsess = [];
         foreach ($newss as $news) {
-            $newseSS = new newses();
-            $newseSS->id = $news['id'];
-            $newseSS->Title = $news['Title'];
-            $newseSS->Decription = $news['Decription'];
-            $newseSS->Image = $news['Image'];
-            $newseSS->Content = $news['Content'];
-            $newseSS->CreateAt = $news['CreateAt'];
-            $newseSS->DeletedAt = $news['DeletedAt'];
-            $newseSS->Approved = $news['Approved'];
-            $newseSS->CateId = $news['CateId'];
-            $newseSS->ApproveBy = $news['AppovedBy'];
-            $newseSS->DeletedBy = $news['DeletedBy'];
-            $newseSS->CreateBy = $news['CreateBy'];
-            $newseSS->Comment = $news['Comment'];
-            $newsess[] = $newseSS;
+            $newsess[] = $this->getNews($news);
         }
         return $newsess;
     }
 
     public function getNewsesNotApprove($adminId = null) {
         $newses = newses::where([
-            ['AppovedBy',null],
+            ['Approved',null],
             ['DeletedBy', null]
             ]);
 
@@ -196,16 +159,38 @@ class NewsRepository implements INewsRepository
         $newses = $newses->orderBy('id','desc')->get();
         $newss = [];
         foreach($newses as $news) {
-            $n = new newses();
-            $n->id = $news['id'];
-            $n->Title = $news['Title'];
-            $n->Decription = $news['Decription'];
-            $n->CreateAt = $news['CreateAt'];
-            $n->CreateBy = $news['CreateBy'];
-            $n->CreateAt = $news['CreateAt'];
-            $n->Comment = $news['Comment'];
-            $newss[] = $n;
+            $newss[] = $this->getNews($news);
         }
         return $newss;
+    }
+
+    public function getNewsesByCreatedAdmin($adminId, $approved = false) {
+        $newses = newses::where('CreateBy',$adminId);
+        if($approved) {
+            $newses = $newses->where('Approved', '<>', null)->orderBy('ApprovedAt','desc');
+        } else {
+            $newses = $newses->where('Approved', null)->orderBy('id','desc');
+        }
+        $newses = $newses->orderBy('id')->get();
+        $newseS = [];
+        foreach($newses as $news) {
+            $newseS[] = $this->getNews($news);
+        }
+        return $newseS;
+    }
+
+    public function getNewsesByApprovedAdmin($adminId = null, $approved = false) {
+        $newses = newses::where('AppovedBy',$adminId);
+        if($approved) {
+            $newses = $newses->where('Approved', '<>', null)->orderBy('ApprovedAt','desc');
+        } else {
+            $newses = $newses->where('Approved', null)->orderBy('id','desc');
+        }
+        $newses = $newses->get();
+        $newseS = [];
+        foreach($newses as $news) {
+            $newseS[] = $this->getNews($news);
+        }
+        return $newseS;
     }
 }

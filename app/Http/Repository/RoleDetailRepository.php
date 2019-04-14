@@ -10,7 +10,7 @@ interface IRoleDetailRepository extends IRepositoryBase {
 }
 
 class RoleDetailRepository implements IRoleDetailRepository {
-    function all($take = null, $skip = null) {
+    public function all($take = null, $skip = null) {
         $roleDetails = roleDetail::all();
 
         if($skip != null && $skip > 0) {
@@ -31,7 +31,8 @@ class RoleDetailRepository implements IRoleDetailRepository {
         }
         return $roleDetailS;
     }
-    function singleId($id) {
+
+    public function singleId($id) {
         $roleDetail = roleDetail::find($id);
         $roledetail = new roleDetail();
         $roledetail->id = $roleDetail['id'];
@@ -39,23 +40,24 @@ class RoleDetailRepository implements IRoleDetailRepository {
 
         return $roledetail;
     }
-    function create($obj) {
+
+    public function create($obj) {
         $obj->id = roleDetail::insertGetId([
             'Name' => $obj->Name
         ]);
     }
 
-    function update($obj) {
+    public function update($obj) {
         roleDetail::where('id',$obj->id)->update([
             'Name' => $obj->Name
         ]);
     }
 
-    function delete($obj) {
+    public function delete($obj) {
         throw new Exception('Chức năng này hiện chưa có');
     }
 
-    function getRoleDetailsByRoleId($id) {
+    public function getRoleDetailsByRoleId($id) {
         $roleDetails = roleDetail::where('roleId',$id)->get();
         $roledetails = [];
 

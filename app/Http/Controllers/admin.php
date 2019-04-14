@@ -10,6 +10,7 @@ use App\Http\Business\NewsBusiness;
 use App\Http\Business\CategoryBusiness;
 use App\_Admin;
 use App\category;
+use Illuminate\Support\Facades\Storage;
 
 class admin extends Controller
 {
@@ -76,10 +77,12 @@ class admin extends Controller
 
         if($pagrams[self::$ApproveNews]) {
             $pagrams['approveNewses'] = $this->newsBusiness->getNewsesNotApprove();
+            $pagrams['ApprovedNewses'] =$this->newsBusiness->getNewsesByApprovedAdmin($admin->id,true);
         }
 
         if($pagrams[self::$CreateNews]) {
-            $pagrams['createdNewses'] = $this->newsBusiness->getNewsesNotApprove($admin->id);
+            $pagrams['NewsesWaiting'] = $this->newsBusiness->getNewsesByCreatedAdmin($admin->id);
+            $pagrams['NewsesApproved'] = $this->newsBusiness->getNewsesByCreatedAdmin($admin->id,true);
         }
 
         if($pagrams[self::$CreateAdmin]) {
@@ -117,6 +120,10 @@ class admin extends Controller
         $news->Content = $request->input('content') != null ? $request->input('content') : '';
         $news->Decription = $request->input('decription');
         $news->CreateAt = date('ymdhis');
+
+        if($news->Content == '') {
+            return view('editNews', ['news' => $news, 'error' => 'Vui lòng nhập nội dung tin tức']);
+        }
 
         if($request->file('image')->isValid()) {
             $news->Image = $request->file('image')->storeAs('images',date('ymdhis'));
@@ -164,7 +171,9 @@ class admin extends Controller
         
         $news = $this->newsBusiness->singleId($id);
         $admin = $this->adminBusiness->singleId($news->CreateBy);
+        $category = $this->categoryBusiness->singleId($news->CateId);
         $news->AdminName = $admin->FullName;
+        $news->CategoryName = $category->Name;
 
         return view('approveNews',['news' => $news]);
         // return json_encode($news);
@@ -214,5 +223,117 @@ class admin extends Controller
         $this->categoryBusiness->create($category);
 
         return redirect(route('admin'));
+    }
+
+    public function editNews($id) {
+        if(session('admin') == null)
+            return redirect(route('login'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if(!$this->isContainRole($roles,self::$CreateNews))
+            return redirect(route('403'));
+
+        $news = $this->newsBusiness->singleId($id);
+        return view('editNews', [
+            'news' => $news,
+            'categories' => $this->categoryBusiness->all()
+        ]);
+    }
+
+    public function editNewsPost(Request $request) {
+        if(session('admin') == null)
+            return redirect(route('login'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if(!$this->isContainRole($roles,self::$CreateNews))
+            return redirect(route('403'));
+
+        $news = new newses();
+        $news->id = $request->input('id');
+        $news->Title = $request->input('title');
+        $news->CateId = $request->input('category');
+        $news->Content = $request->input('content');
+        $news->Decription = $request->input('decription');
+
+        if(empty($request->input('image'))) {
+            $news->Image = $request->input('img_old');
+        }
+
+        if($news->Content == '') {
+            return view('editNews', [
+                'news' => $news,
+                'error' => 'Vui lòng nhập nội dung tin tức',
+                'categories' => $this->categoryBusiness->all()
+            ]);
+        }
+
+        if($request->file('image') != null) {
+            if($request->file('image')->isValid()) {
+                $news->Image = $request->file('image')->storeAs('images',date('ymdhis'));
+            }
+        }
+
+        $this->newsBusiness->update($news);
+
+        $img_old = $request->input('img_old');
+
+        if($request->file('image') != null && $request->file('image')->isValid()) {
+            Storage::delete($img_old);
+        }
+        return redirect(route('admin'));
+    }
+
+    public function reviewNews($id) {
+        if(session('admin') == null) {
+            return redirect(route('admin'));
+        }
+
+        $roles = session('admin')->Role->RoleDetails;
+        if(!$this->isContainRole($roles,self::$CreateNews))
+            return redirect(route('403'));
+        
+        $news = $this->newsBusiness->singleId($id);
+        $news->CategoryName = $this->categoryBusiness->singleId($news->CateId)->Name;
+        return view('detailComment', ['news' => $news]);
+    }
+
+    public function detailAdmin(int $id = null) {
+        if(session('admin') == null)
+            return redirect(route('admin'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if($this->isContainRole($roles, self::$CreateNews)) {
+            $adminId = $id == null ? session('admin')->id : $id;
+            $admin = $this->adminBusiness->singleId($adminId);
+            $admin->Role = $this->roleBusiness->singleId($admin->roleId);
+            return view('detailAdmin',['admin' => $admin]);
+        } else {
+            return view('detailAdmin', ['admin' => session('admin')]);
+        }
+    }
+
+    public function changePasswordAdmin(int $id = null) {
+        if(session('admin') == null)
+            return redirect(route('admin'));
+        
+        return view('password');
+    }
+
+    public function changePasswordAdminPost(Request $request) {
+        if(session('admin') == null)
+            return redirect(route('admin'));
+        
+        $roles = session('admin')->Role->RoleDetails;
+        if($this->isContainRole($roles, self::$CreateAdmin)) {
+            $id = $request->input('id');
+            $password = $request->input('password');
+            $this->adminBusiness->passowrdChange($id,$password);
+        } else {
+            $id = session('admin')->id;
+            $password = $request->input('password');
+            $this->adminBusiness->passowrdChange($id,$password);
+        }
+
+        return redirect(route('detailAdmin'));
     }
 }

@@ -53,6 +53,7 @@ return array(
     'App\\newses' => $baseDir . '/app/newses.php',
     'App\\role' => $baseDir . '/app/role.php',
     'App\\roleDetail' => $baseDir . '/app/roleDetail.php',
+    'ApprovedAt' => $baseDir . '/database/migrations/2019_04_14_081629_approvedAt.php',
     'ArithmeticError' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php',
     'AssertionError' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',

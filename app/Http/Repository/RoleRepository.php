@@ -11,7 +11,7 @@ interface IRoleRepository extends IRepositoryBase {
 
 class RoleRepository implements IRoleRepository {
 
-    function all($take = null, $skip = null) {
+    public function all($take = null, $skip = null) {
         $roles = role::all();
 
         if($skip != null && $skip > 0) {
@@ -36,7 +36,7 @@ class RoleRepository implements IRoleRepository {
         return $roleS;
     }
 
-    function singleId($id) {
+    public function singleId($id) {
         $role = role::find($id);
         $rolE = new role();
         $rolE->id = $role['id'];
@@ -45,19 +45,19 @@ class RoleRepository implements IRoleRepository {
         return $rolE;
     }
 
-    function create($obj) {
+    public function create($obj) {
         $obj->id = role::insertGetId([
             'Name' => $obj->Name
         ]);
     }
 
-    function update($obj) {
+    public function update($obj) {
         role::where('id',$obj->id)->update([
             'Name' => $obj->Name
         ]);
     }
 
-    function delete($obj) {
+    public function delete($obj) {
         throw new Exception('Chức năng này hiện không có');
     }
 }

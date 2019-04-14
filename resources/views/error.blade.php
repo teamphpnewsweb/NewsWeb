@@ -12,8 +12,8 @@
 <body>
 <div class="container body-content">
         <div style="text-align: center">
-        <label class="col-md-12" style="font-size: 56px">403</label>
-        <label class="col-md-12" style="font-size:36px">Chức năng này hiện không có</label>
+        <label class="col-md-12" style="font-size:48px">Chức năng này hiện không có</label>
+        <a href="{{route('admin')}}">Quay về trang quảng lý</a>
         <div>
     </div>
 <div>

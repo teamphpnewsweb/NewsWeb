@@ -3,7 +3,6 @@
 namespace App\Http\Repository;
 use App\category;
 use Mockery\CountValidator\Exception;
-use App\Model\_Category;
 
 interface ICategoryRepository extends IRepositoryBase {
 

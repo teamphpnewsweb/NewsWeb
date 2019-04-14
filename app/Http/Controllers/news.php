@@ -48,7 +48,7 @@ class news extends Controller
 
     public function newsDetail($id) {
         $news = $this->iNewsBusiness->singleId($id);
-        $newses = $this->iNewsBusiness->getNewsesByCateId($news->CateId, $news->id,5);
+        $newses = $this->iNewsBusiness->getNewsesByCateId($news->CateId, $news->id, 8);
 
         return view('newsdetail',['news' => $news, 'newses' => $newses]);
         // return json_encode($news);

@@ -29,21 +29,21 @@ class RoleBusiness implements IRoleBusiness {
         return $roles;
     }
 
-    function singleId($id) {
+    public function singleId($id) {
         $role = $this->iRoleRepository->singleId($id);
         $role->RoleDetails = $this->iRoleDetailRepository->getRoleDetailsByRoleId($role->id);
         return $role;
     }
 
-    function create($obj) {
+    public function create($obj) {
         $this->iRoleRepository->create($obj);
     }
 
-    function update($obj) {
+    public function update($obj) {
         $this->iRoleRepository->update($obj);
     }
 
-    function delete($obj) {
+    public function delete($obj) {
         $this->iRoleRepository->delete($obj);
     }
 }

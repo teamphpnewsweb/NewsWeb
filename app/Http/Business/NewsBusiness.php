@@ -11,6 +11,8 @@ interface INewsBusiness extends IBusinessBase {
     function getNewsesByCate($cateId,$take = null, $skip = null);
     function getNewsesByCateId($cateId, $newsid, $take = null, $skip = null);
     function getNewsesNotApprove($adminId);
+    function getNewsesByCreatedAdmin($adminId, $approved = false);
+    function getNewsesByApprovedAdmin($adminId = null, $approved = false);
 }
 
 class NewsBusiness implements INewsBusiness {
@@ -56,6 +58,25 @@ class NewsBusiness implements INewsBusiness {
 
     public function getNewsesNotApprove($adminId = null) {
         $newses = $this->iNewsRepository->getNewsesNotApprove($adminId);
+        foreach($newses as $news) {
+            $news->AdminName = $this->adminRepository->singleId($news->CreateBy)->FullName;
+        }
+        return $newses;
+    }
+
+    public function getNewsesByCreatedAdmin($adminId, $approved = false) {
+        $newses = $this->iNewsRepository->getNewsesByCreatedAdmin($adminId, $approved);
+        foreach($newses as $news) {
+            $news->AdminName = $this->adminRepository->singleId($news->CreateBy)->FullName;
+            if($approved) {
+                $news->ApprovedName = $this->adminRepository->singleId($news->ApprovedBy)->FullName;
+            }
+        }
+        return $newses;
+    }
+
+    public function getNewsesByApprovedAdmin($adminId = null, $approved = false) {
+        $newses = $this->iNewsRepository->getNewsesByApprovedAdmin($adminId, $approved);
         foreach($newses as $news) {
             $news->AdminName = $this->adminRepository->singleId($news->CreateBy)->FullName;
         }

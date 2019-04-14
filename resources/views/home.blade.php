@@ -35,24 +35,22 @@ $title = 'Trang tin tức';
         <div class="col-md-4 col-sm-6" style="height: 200px;overflow-y: auto; overflow-x: hidden;">
             <?php $count = count($category->Newses); ?>
             @for($i = 1; $i < $count; $i++)
-            <div class="col-md-12 col-sm-12 row thumbnail" style="margin: 5px;
-                                                                                                padding: 5px;">
-                <a style="font-size: 16px;" href="{{route('newsdetail', ['id' => $category->Newses[$i]->id])}}">
+            <div class="col-md-12 col-sm-12 row thumbnail" style="margin: 5px; padding: 5px;">
+                <a style="font-size: 16px; color: black" href="{{route('newsdetail', ['id' => $category->Newses[$i]->id])}}">
                     <div class="col-md-12 col-sm-12 row">
-                        <div class="col-md-6 col-sm-7">
-                            <img style="height: 100px; width: 100%;" src="{{route('home')}}/storage/app/{{ $category->Newses[$i]->Image }}" />
+                        <div class="col-md-5 col-sm-7">
+                            <img style="height: 100px; width: 100%; border-radius: 4px;" src="{{route('home')}}/storage/app/{{ $category->Newses[$i]->Image }}" />
                         </div>
-                        <div class="col-md-6 col-sm-5">
-                            <div class="col-md-12 col-sm-12">
+                        <div class="col-md-7 col-sm-5" style="text-align: justify">
+                            <div class="col-md-12 col-sm-12" style="font-size: 14px;">
                                 {{ $category->Newses[$i]->Title }}
                             </div>
                         </div>
                     </div>
                 </a>
-        </div>
+            </div>
         @endfor
         </div>
-    </div>
     @endif
 </div>
 @endforeach

@@ -1,13 +1,16 @@
 <?php
-$title = "Tạo bài báo";
+$title = "Sửa bài báo";
 ?>
 @extends('layout.layout')
 @section('content')
+@if($news != null)
 <div class="col-md-12">
     <h3 class="col-md-12" style="text-align: center">{{$title}}</h3>
     <hr>
-    <form method="post" enctype="multipart/form-data">
+    <form action="{{ route('editNews') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
+        <input name="id" type="hidden" value="{{$news->id}}">
+        <input name='img_old' type="hidden" value="{{$news->Image}}">
         <div class="col-md-12">
             <div class="col-md-12">
                 <label class="col-md-2 control-label">Tiêu đề</label>
@@ -19,7 +22,7 @@ $title = "Tạo bài báo";
             <div class="col-md-12">
                 <label class="col-md-2 control-label">Tóm tắt</label>
                 <div class="col-md-10 form-group">
-                    <input id="decription" name="decription" type="text" class="form-control" data-val="true" data-val-required="Vui lòng nhập tiêu đề" value="{{ isset($news) ? $news->Title : ''}}">
+                    <input id="decription" name="decription" type="text" class="form-control" data-val="true" data-val-required="Vui lòng nhập tiêu đề" value="{{ isset($news) ? $news->Decription : ''}}">
                     <span class="text-danger field-validation-valid" data-valmsg-for="decription" data-valmsg-replace="true"></span>
                 </div>
             </div>
@@ -42,8 +45,7 @@ $title = "Tạo bài báo";
             <div class="col-md-12">
                 <label class="col-md-2 control-label">Ảnh đại diện</label>
                 <div class="col-md-10 form-group">
-                    <input id="image" name="image" type="file" accept=".jpg, .jpeg, .png, .bmp, .gif" data-val="true" data-val-required="Vui lòng chọn một ảnh đại diện">
-                    <span class="text-danger field-validation-valid" data-valmsg-for="image" data-valmsg-replace="true"></span>
+                    <input id="image" name="image" type="file" accept=".jpg, .jpeg, .png, .bmp, .gif">
                 </div>
             </div>
             <div class="col-md-12">
@@ -56,7 +58,12 @@ $title = "Tạo bài báo";
                 </div>
             </div>
             <div class="col-md-12" style="text-align: center; padding: 10px;">
-                <button class="btn btn-success">Tạo bài viết</button>
+                <div class="col-md-3">
+                    <button class="btn btn-primary">Sửa bài viết</button>
+                </div>
+                <div class="col-md-3">
+                    <a class="btn btn-default" href="{{ route('admin') }}">Quay lại<a>
+                </div>
             </div>
         </div>
     </form>
@@ -67,4 +74,11 @@ $title = "Tạo bài báo";
         CKEDITOR.replace('content');
     </script>
 </div>
+@else
+<div class="col-md-12" style="text-align: center;">
+    <label style="font-size: 48px">Không tìm thấy bài viết</label>
+    <br>
+    <a href="{{route('admin')}}">Quay lại</a>
+</div>
+@endif
 @endsection
