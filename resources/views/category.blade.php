@@ -12,8 +12,8 @@ $title = $category->Name;
         <div class="col-md-12 col-sm-12 row " style="padding: 10px">
             <div class=" col-md-12 col-sm-12 thumbnail" style="display: block; margin: 5px;">
                 <a href="{{route('newsdetail',['id' => $news->id])}}">
-                <div class="col-md-4 col-sm-6" style="text-align: center">
-                    <img style="height: 200px" src="{{route('home')}}/storage/app/{{ $news->Image }}">
+                <div class="col-md-4 col-sm-6" style="text-align: center;">
+                    <img style="height: 200px !important" src="{{route('home')}}/storage/app/{{ $news->Image }}">
                 </div>
                 <div class="col-md-8 col-sm-6">
                     <div class="col-md-12 col-sm-12 row">
